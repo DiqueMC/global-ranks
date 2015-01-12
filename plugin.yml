@@ -1,0 +1,5 @@
+name: GlobalRanks
+main: com.diquemc.GlobalRanks.Plugin
+author: Hector22x
+description: Manage global ranks
+version: 0.0.1
