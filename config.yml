@@ -1,13 +1,14 @@
 config-version: 1
-properties:
-  # Show debug messages.
-  auto-update-global: false
+ranks:
+  vipHierro:
+    duration: 30d
+    weight: 1
+  vipDiamante:
+    duration: 30d
+    weight: 2
+users:
+  fakeuser:
+    rank: vipHierro
+    from: startdate
+    to: enddate
 
-  # How often, in seconds, to check the chunk.
-  inspection-frequency: 300
-  
-  # Notify players in that chunk if stuff has been culled. 
-  notify-players: false
-
-messages:
-  removedEntites: "&7Removed %s %s in your chunk."

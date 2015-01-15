@@ -1,77 +1,49 @@
 package com.diquemc.GlobalRanks;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-
-import org.bukkit.Location;
-import org.bukkit.configuration.InvalidConfigurationException;
+import com.diquemc.GlobalRanks.command.SetRankCommand;
+import com.diquemc.GlobalRanks.manager.RankManager;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.cyprias.ChunkSpawnerLimiter.listeners.EntityListener;
-import com.cyprias.ChunkSpawnerLimiter.listeners.WorldListener;
-
 public class GlobalRanks extends JavaPlugin {
-	private static GlobalRanks instance = null;
-	public static String chatPrefix = "&4[&bCSL&4]&r ";
+	private static GlobalRanks plugin = null;
+	public static String chatPrefix = "&4[&bGR&4]&r ";
+    public static GlobalConfig global;
 
-	public static HashMap<String, Location> deaths = new HashMap<String, Location>();
 
 	public void onEnable() {
-		instance = this;
+		plugin = this;
+        loadConfiguration();
+        global = new GlobalConfig(this);
+        new RankManager(this);
+        this.getCommand("setrank").setExecutor(new SetRankCommand(this));
 
-		// Check if config.yml exists on disk, copy it over if not. This keeps
-		// our comments intact.
-		if (!(new File(getDataFolder(), "config.yml").exists())) {
-			Logger.info(chatPrefix + "Copying config.yml to disk.");
-			try {
-				YML.toFile(getResource("config.yml"), getDataFolder(), "config.yml");
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				return;
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		}
-
-		// Check if the config on disk is missing any settings, tell console if
-		// so.
-		try {
-			Config.checkForMissingProperties();
-		} catch (IOException e4) {
-			e4.printStackTrace();
-		} catch (InvalidConfigurationException e4) {
-			e4.printStackTrace();
-		}
-
-		// Register our event listener.
-		getServer().getPluginManager().registerEvents(new EntityListener(), this);
-		getServer().getPluginManager().registerEvents(new WorldListener(), this);
-
-		
-
+        getLogger().info(chatPrefix + "GlobalRanks enabled");
 	}
+
+    public void loadConfiguration() {
+        //See "Creating you're defaults"
+        getConfig().options().copyDefaults(true); // NOTE: You do not have to use "plugin." if the class extends the java plugin
+        //Save the config whenever you manipulate it
+        saveConfig();
+    }
 
 	public void onDisable() {
 		getServer().getScheduler().cancelTasks(this);
 	}
-	
-	public static final GlobalRanks getInstance() {
-		return instance;
-	}
-
 
 	public static int scheduleSyncRepeatingTask(Runnable run, long delay) {
 		return scheduleSyncRepeatingTask(run, delay, delay);
 	}
 	public static int scheduleSyncRepeatingTask(Runnable run, long start, long delay) {
-		return instance.getServer().getScheduler().scheduleSyncRepeatingTask(instance, run, start, delay);
+		return plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, run, start, delay);
 	}
 	public static void cancelTask(int taskID) {
-		instance.getServer().getScheduler().cancelTask(taskID);
+		plugin.getServer().getScheduler().cancelTask(taskID);
 	}
-	
-	
+
+    public static GlobalRanks getPlugin() {
+        return plugin;
+    }
+
 }

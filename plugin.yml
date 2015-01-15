@@ -1,5 +1,15 @@
 name: GlobalRanks
-main: com.diquemc.GlobalRanks.Plugin
+main: com.diquemc.GlobalRanks.GlobalRanks
 author: Hector22x
 description: Manage global ranks
 version: 0.0.1
+commands:
+ setrank:
+  description: Main command of the plugin.
+  usage: /setrank
+  permission: globalranks.admin
+
+permissions:
+ globalranks.admin:
+  default: true
+  description: Allows you to use the plugin.
