@@ -5,8 +5,20 @@ description: Manage global ranks
 version: 0.0.1
 commands:
  setrank:
-  description: Main command of the plugin.
+  description: Agrega el rango especificado al jugador
   usage: /setrank <playername> <rankname>
+  permission: globalranks.admin
+ delranks:
+  description: Elimina los rangos de un jugador
+  usage: /delranks <playername>
+  permission: globalranks.admin
+ getrank:
+  description: Muestra los rangos del jugador especificado
+  usage: /getrank <playername>
+  permission: globalranks.admin
+ myrank:
+  description: Muestra el rango actual.
+  usage: /myrank
   permission: globalranks.admin
 
 permissions:

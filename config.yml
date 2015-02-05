@@ -1,12 +1,13 @@
 config-version: 1
 database:
-  type: mysql
+  type: sqlite
   host: localhost
   port: '3306'
   user: user
   password: password
   database: minecraft
-
+#Seconds
+frequencyCheck: 60
 ranks:
   youtuber:
     duration: 30s

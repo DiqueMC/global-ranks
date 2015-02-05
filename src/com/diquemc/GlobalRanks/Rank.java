@@ -102,7 +102,6 @@ public class Rank {
         List<String> messages = new ArrayList<String>();
         if(info != null && info.get("leaveMessage") != null){
             messages = (List) info.get("leaveMessage");
-
         }else{
             messages.add(ChatColor.YELLOW + "Se ha agotado tu rango " + getDisplayName());
 

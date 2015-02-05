@@ -3,7 +3,6 @@ package com.diquemc.GlobalRanks.manager;
 import com.diquemc.GlobalRanks.GlobalRanks;
 import com.diquemc.GlobalRanks.PlayerRank;
 import com.diquemc.GlobalRanks.Rank;
-import net.md_5.bungee.api.ChatColor;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -48,10 +47,19 @@ public class RankManager {
         plugin.getConfig().set("users." + player.getName() + ".rank", rank.getName());
         plugin.getLogger().warning("Added player " + player.getName() + " to group " + rank.getDisplayName());
         if(player.isOnline()){
-//            player.getPlayer().sendMessage(ChatColor.GREEN + "Felicitaciones! Ya tienes tu rango " + rank.getDisplayName());
             rank.sendJoinMessage(player.getPlayer());
         }
         return true;
+    }
+
+    public String getPlayerGroup(OfflinePlayer player){
+        String[] groups = permission.getPlayerGroups(null,player);
+        if(groups.length > 0){
+            return groups[0];
+        }else{
+            return null;
+        }
+
     }
 
     public static boolean removeRank(OfflinePlayer player, Rank rank){
@@ -69,12 +77,8 @@ public class RankManager {
 
     public void checkRanks(OfflinePlayer player) {
         String playerName = player.getName();
-        PlayerRank gr = plugin.global.getRankForPlayer(player);
-        String localRankName = plugin.getConfig().getString("users."  + playerName + ".rank");
-        Rank localRank = null;
-        if(localRankName != null){
-            localRank= Rank.getRankByName(localRankName);
-        }
+        PlayerRank gr = getGlobalPlayerRank(player);
+        Rank localRank = getLocalRank(player);
         if(gr == null){
             if(localRank != null){
                 removeRank(player,localRank);
@@ -102,20 +106,19 @@ public class RankManager {
 
     }
 
-//    public LinkedHashMap getRankByName(String rankName) {
-//        Collection<String> rankList = ((MemorySection) plugin.getConfig().get("ranks")).getKeys(false);
-//
-//        for (String e : rankList)
-//            if (e.equalsIgnoreCase(rankName)){
-//                return (LinkedHashMap) ((MemorySection)plugin.getConfig().get("ranks." + e)).getValues(false);
-//            }
-//        return null;
-//    }
-//
-//    public boolean isValidRank(String rankName) {
-//        return  getRankByName(rankName) != null;
-//
-//    }
+    public PlayerRank getGlobalPlayerRank(OfflinePlayer player){
+        return plugin.global.getRankForPlayer(player);
+
+    }
+
+    public Rank getLocalRank(OfflinePlayer player){
+        String localRankName = plugin.getConfig().getString("users."  + player.getName() + ".rank");
+        Rank localRank = null;
+        if(localRankName != null){
+            localRank= Rank.getRankByName(localRankName);
+        }
+        return localRank;
+    }
 
     public PlayerRank setGlobalRank(OfflinePlayer p, Rank rank){
 

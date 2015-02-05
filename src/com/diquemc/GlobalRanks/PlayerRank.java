@@ -13,13 +13,13 @@ public class PlayerRank {
     private Rank rank;
     public Date expirationDate = null;
     public Date creationDate = null;
-    public String uid;
+    public String uuid;
     public OfflinePlayer _player;
 
     public PlayerRank(LinkedHashMap<String,Object> playerInfo) {
         try {
             playerName = (String) playerInfo.get("name");
-            uid = (String) playerInfo.get("uid");
+            uuid = (String) playerInfo.get("uuid");
 
             rankName = (String) playerInfo.get("rank");
             if(rankName != null){
@@ -47,7 +47,7 @@ public class PlayerRank {
             playerName = player.getName();
             rankName = rankObject.getName();
             rank = rankObject ;
-            uid = player.getUniqueId().toString();
+            uuid = player.getUniqueId().toString();
             if(expiration > 0){
                 expirationDate = new Date(expiration);
             }
@@ -65,8 +65,8 @@ public class PlayerRank {
 
 //    public OfflinePlayer getTargetPlayer(){
 //        if(_player == null){
-//            if(uid != null){
-//                _player = GlobalRanks.getPlugin().getPlayer(UUID.fromString(uid));
+//            if(uuid != null){
+//                _player = GlobalRanks.getPlugin().getPlayer(UUID.fromString(uuid));
 //            }else{
 //                _player = GlobalRanks.getPlugin().getPlayer(playerName);
 //            }
@@ -88,7 +88,7 @@ public class PlayerRank {
     public LinkedHashMap toHash() {
         LinkedHashMap<String,Object> result = new LinkedHashMap<String,Object>();
         result.put("name",playerName);
-        result.put("uid",uid);
+        result.put("uuid",uuid);
         result.put("rank",rank.getName());
         if(expirationDate != null){
             result.put("expiration",expirationDate.getTime());
