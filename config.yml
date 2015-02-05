@@ -11,26 +11,46 @@ ranks:
   youtuber:
     duration: 30s
     weight: 1
-    displayName: '&6Vip Hierro'
+    displayName: '&cYoutuber'
     joinMessage:
     - '&6 ==========================================='
-    - '&a Felicitaciones ya estas disfrutando de los beneficios del Vip Diamante!.'
+    - '&a Felicitaciones ya eres rango &cYoutuber&a!.'
     - '&a Gracias Por Tu Colaboracion Con El Server!'
     - '&6 ==========================================='
     leaveMessage:
     - '&6 ==========================================='
-    - '&a Se ha agotado el tiempo de tu vip :('
+    - '&c Se ha agotado el tiempo de tu rango :('
     - '&6 ==========================================='
 
-
   vipHierro:
-    duration: 30d
+    duration: 30s
     weight: 1
-    displayName: '&6Vip Hierro'
+    displayName: '&eVip Hierro'
+    joinMessage:
+    - '&6 ==========================================='
+    - '&a Felicitaciones ya estas disfrutando de los'
+    - '&a beneficios del &eVip Hierro&a!.'
+    - '&a Gracias Por Tu Colaboracion Con El Server!'
+    - '&6 ==========================================='
+    leaveMessage:
+    - '&6 ==========================================='
+    - '&c Se ha agotado el tiempo de tu vip :('
+    - '&6 ==========================================='
   vipDiamante:
-    duration: 30d
+    duration: 30s
     weight: 2
-    displayName: '&dVip Diamante'
+    displayName: '&bVip Diamante'
+    joinMessage:
+    - '&6 ==========================================='
+    - '&a Felicitaciones ya estas disfrutando de los'
+    - '&a beneficios del &bVip Diamante&a!.'
+    - '&a Gracias Por Tu Colaboracion Con El Server!'
+    - '&6 ==========================================='
+    leaveMessage:
+    - '&6 ==========================================='
+    - '&c Se ha agotado el tiempo de tu vip :('
+    - '&6 ==========================================='
+
 users:
   fakeuser:
     rank: vipHierro

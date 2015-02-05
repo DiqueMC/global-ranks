@@ -6,7 +6,7 @@ version: 0.0.1
 commands:
  setrank:
   description: Main command of the plugin.
-  usage: /setrank
+  usage: /setrank <playername> <rankname>
   permission: globalranks.admin
 
 permissions:
