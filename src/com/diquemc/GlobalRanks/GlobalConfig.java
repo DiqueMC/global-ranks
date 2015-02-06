@@ -1,6 +1,7 @@
 package com.diquemc.GlobalRanks;
 
 import org.bukkit.OfflinePlayer;
+
 public class GlobalConfig {
 
     private GlobalRanks plugin;
@@ -16,10 +17,10 @@ public class GlobalConfig {
     @SuppressWarnings("unchecked")
     public PlayerRank getRankForPlayer(OfflinePlayer p) {
         PlayerRank pr = plugin.getDB().getRank(p);
-        if(pr == null){
+        if (pr == null) {
             return null;
         }
-        if(pr.isExpired()){
+        if (pr.isExpired()) {
             plugin.getLogger().info("Rank expired going to remove player");
             removePlayer(p);
             return null;
@@ -27,7 +28,7 @@ public class GlobalConfig {
         return pr;
     }
 
-    public void addRank(OfflinePlayer player, PlayerRank playerRank){
-        plugin.getDB().uploadPlayerRank(player,playerRank);
+    public void addRank(OfflinePlayer player, PlayerRank playerRank) {
+        plugin.getDB().uploadPlayerRank(player, playerRank);
     }
 }

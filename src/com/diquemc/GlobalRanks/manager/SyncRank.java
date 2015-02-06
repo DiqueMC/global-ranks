@@ -11,10 +11,10 @@ public class SyncRank implements Runnable {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void run() {
-
         Player[] pl = plugin.getServer().getOnlinePlayers();
-        for(Player player : pl){
+        for (Player player : pl) {
             plugin.getRankManager().checkRanks(player);
         }
     }

@@ -16,47 +16,47 @@ public class PlayerRank {
     public String uuid;
     public OfflinePlayer _player;
 
-    public PlayerRank(LinkedHashMap<String,Object> playerInfo) {
+    public PlayerRank(LinkedHashMap<String, Object> playerInfo) {
         try {
             playerName = (String) playerInfo.get("name");
             uuid = (String) playerInfo.get("uuid");
 
             rankName = (String) playerInfo.get("rank");
-            if(rankName != null){
+            if (rankName != null) {
                 rank = Rank.getRankByName(rankName);
 
                 rankName = rank.getName();
 
             }
-            if(playerInfo.get("expiration") != null && ((Long)playerInfo.get("expiration")) > 0){
+            if (playerInfo.get("expiration") != null && ((Long) playerInfo.get("expiration")) > 0) {
                 expirationDate = new Date((Long) playerInfo.get("expiration"));
             }
-            if(playerInfo.get("creation") != null && ((Long)playerInfo.get("creation")) > 0){
+            if (playerInfo.get("creation") != null && ((Long) playerInfo.get("creation")) > 0) {
                 creationDate = new Date((Long) playerInfo.get("creation"));
             }
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             Bukkit.getLogger().severe("Failed to load player rank " + e);
             e.printStackTrace();
         }
     }
 
-    public PlayerRank(OfflinePlayer player, Rank rankObject, long expiration, long creation){
+    public PlayerRank(OfflinePlayer player, Rank rankObject, long expiration, long creation) {
         try {
             _player = player;
             playerName = player.getName();
             rankName = rankObject.getName();
-            rank = rankObject ;
+            rank = rankObject;
             uuid = player.getUniqueId().toString();
-            if(expiration > 0){
+            if (expiration > 0) {
                 expirationDate = new Date(expiration);
             }
-            if(creation > 0){
+            if (creation > 0) {
                 creationDate = new Date(creation);
-            }else{
+            } else {
                 creationDate = new Date();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Bukkit.getLogger().severe("Failed to load player rank " + e);
             e.printStackTrace();
         }
@@ -74,27 +74,27 @@ public class PlayerRank {
 //        return _player;
 //    }
 
-    public Rank getTargetRank(){
-        if(rank == null){
+    public Rank getTargetRank() {
+        if (rank == null) {
             rank = Rank.getRankByName(rankName);
         }
         return rank;
     }
 
-    public String getTargetRankName(){
+    public String getTargetRankName() {
         return getTargetRank().getName();
     }
 
     public LinkedHashMap toHash() {
-        LinkedHashMap<String,Object> result = new LinkedHashMap<String,Object>();
-        result.put("name",playerName);
-        result.put("uuid",uuid);
-        result.put("rank",rank.getName());
-        if(expirationDate != null){
-            result.put("expiration",expirationDate.getTime());
+        LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>();
+        result.put("name", playerName);
+        result.put("uuid", uuid);
+        result.put("rank", rank.getName());
+        if (expirationDate != null) {
+            result.put("expiration", expirationDate.getTime());
         }
-        if(creationDate != null){
-            result.put("creation",creationDate.getTime());
+        if (creationDate != null) {
+            result.put("creation", creationDate.getTime());
         }
         return result;
     }
