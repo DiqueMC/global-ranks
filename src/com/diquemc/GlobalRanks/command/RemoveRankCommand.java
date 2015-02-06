@@ -29,6 +29,7 @@ public class RemoveRankCommand implements CommandExecutor {
                 return false;
             }
             GlobalRanks.getPlugin().global.removePlayer(p);
+            plugin.getRankManager().checkRanks(p);
             sender.sendMessage(ChatColor.GREEN + "Se han eliminado los rangos del jugador " + ChatColor.YELLOW + p.getName());
 
 

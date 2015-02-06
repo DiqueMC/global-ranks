@@ -5,7 +5,11 @@ import com.diquemc.GlobalRanks.PlayerRank;
 import com.diquemc.GlobalRanks.Rank;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.MemorySection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
+
+import java.util.LinkedHashMap;
 
 public class RankManager {
     public static RankManager instance;
@@ -35,16 +39,22 @@ public class RankManager {
     }
 
     public static boolean hasRank(OfflinePlayer player, Rank rank){
-        return permission.playerInGroup(null,player,rank.getName());
+//        return permission.playerInGroup(null,player,rank.getName());
+        String[] groups = permission.getPlayerGroups(null,player);
+        for(String group : groups){
+            if(rank.isEqualTo(group)){
+                return true;
+            }
+        }
+        return false;
     }
 
-    public boolean setRank(OfflinePlayer player, Rank rank){
+    private boolean setRank(OfflinePlayer player, Rank rank){
         if(hasRank(player,rank)){
             plugin.getLogger().warning("Player already have the rank: " + rank);
             return false;
         }
         permission.playerAddGroup(null, player, rank.getName());
-        plugin.getConfig().set("users." + player.getName() + ".rank", rank.getName());
         plugin.getLogger().warning("Added player " + player.getName() + " to group " + rank.getDisplayName());
         if(player.isOnline()){
             rank.sendJoinMessage(player.getPlayer());
@@ -76,13 +86,13 @@ public class RankManager {
 
 
     public void checkRanks(OfflinePlayer player) {
-        String playerName = player.getName();
+        String uuid = player.getUniqueId().toString();
         PlayerRank gr = getGlobalPlayerRank(player);
         Rank localRank = getLocalRank(player);
         if(gr == null){
             if(localRank != null){
-                removeRank(player,localRank);
-                plugin.getConfig().set("users."  + playerName + ".rank",null);
+                removeRank(player, localRank);
+                saveLocalRank(player, null);
                 if(player.isOnline()){
                     localRank.sendLeaveMessage(player.getPlayer());
                 }
@@ -99,7 +109,7 @@ public class RankManager {
                     removeRank(player,localRank);
                 }
                 setRank(player,gr.getTargetRank());
-                plugin.getConfig().set("users."  + playerName + ".rank",gr.getTargetRankName());
+                saveLocalRank(player, gr);
 
             }
         }
@@ -111,15 +121,6 @@ public class RankManager {
 
     }
 
-    public Rank getLocalRank(OfflinePlayer player){
-        String localRankName = plugin.getConfig().getString("users."  + player.getName() + ".rank");
-        Rank localRank = null;
-        if(localRankName != null){
-            localRank= Rank.getRankByName(localRankName);
-        }
-        return localRank;
-    }
-
     public PlayerRank setGlobalRank(OfflinePlayer p, Rank rank){
 
         if(!rank.isValid()){
@@ -129,10 +130,49 @@ public class RankManager {
 
         long expireDate = rank.getExpirationFromNow();
         PlayerRank pr = new PlayerRank(p,rank,expireDate,0);
-        setRank(p,rank);
-        plugin.global.addRank(p,pr);
+        plugin.global.addRank(p, pr);
+        checkRanks(p);
         return pr;
     }
+
+    private void saveLocalRank (OfflinePlayer player, PlayerRank playerRank){
+        if(playerRank != null){
+            plugin.getConfig().set("users."  + player.getUniqueId().toString(), playerRank.toHash());
+        }else{
+            plugin.getConfig().set("users."  + player.getUniqueId().toString(),null);
+        }
+        plugin.saveConfig();
+
+    }
+
+    public Rank getLocalRank(OfflinePlayer player){
+        FileConfiguration config = plugin.getConfig();
+        String uuid = player.getUniqueId().toString();
+
+        LinkedHashMap<String,Object> playerConfig;
+        if(config.get("users." + uuid) == null){
+            return null;
+        }
+        //HOOORRIBLEEE
+        if(config.get("users." + uuid).getClass() == MemorySection.class){
+            playerConfig = (LinkedHashMap<String,Object>)((MemorySection)config.get("users." + uuid)).getValues(false);
+        }else if(config.get("users." + uuid).getClass() == LinkedHashMap.class){
+            playerConfig = (LinkedHashMap<String,Object>) config.get("users." + uuid);
+        }else{
+            plugin.getLogger().severe("UNRECOGNIZED CLASS " + config.get("users." + uuid).getClass() );
+            return null;
+
+        }
+
+        PlayerRank localPlayerRank = new PlayerRank(playerConfig);
+        Rank localRank = null;
+        if(localPlayerRank != null){
+            localRank= localPlayerRank.getTargetRank();
+        }
+
+        return localRank;
+    }
+
 
 }
 

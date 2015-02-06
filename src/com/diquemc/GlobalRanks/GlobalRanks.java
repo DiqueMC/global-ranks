@@ -1,15 +1,13 @@
 package com.diquemc.GlobalRanks;
 
-import com.diquemc.GlobalRanks.command.GetRankCommand;
-import com.diquemc.GlobalRanks.command.MyRankCommand;
-import com.diquemc.GlobalRanks.command.RemoveRankCommand;
-import com.diquemc.GlobalRanks.command.SetRankCommand;
+import com.diquemc.GlobalRanks.command.*;
 import com.diquemc.GlobalRanks.databases.MySQL;
 import com.diquemc.GlobalRanks.databases.SQL;
 import com.diquemc.GlobalRanks.databases.SQLite;
 import com.diquemc.GlobalRanks.manager.RankManager;
 import com.diquemc.GlobalRanks.manager.SyncRank;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashSet;
@@ -42,18 +40,19 @@ public class GlobalRanks extends JavaPlugin {
         this.getCommand("setrank").setExecutor(new SetRankCommand(this));
         this.getCommand("delranks").setExecutor(new RemoveRankCommand(this));
         this.getCommand("getrank").setExecutor(new GetRankCommand(this));
-        this.getCommand("myrank").setExecutor(new MyRankCommand(this));
+        this.getCommand("rank").setExecutor(new MyRankCommand(this));
+        this.getCommand("globalranks").setExecutor(new MainCommand(this));
         getLogger().info(chatPrefix + "GlobalRanks enabled");
 
         if( ! DATABASE.checkConnection() )
         {
             getLogger().severe("Error with DATABASE");
             getServer().getPluginManager().disablePlugin(this);
+            return ;
         }
         SyncRank syncRank = new SyncRank(this);
         scheduleSyncRepeatingTask(syncRank,20L * 10, 20L * getConfig().getInt("frequencyCheck")); //EVERY 60 segs
-
-
+        getServer().getPluginManager().registerEvents( new PlayerListener(this), this );
 
 	}
 
@@ -90,6 +89,14 @@ public class GlobalRanks extends JavaPlugin {
         }
 
         return true;
+    }
+
+    public void reload(){
+        getServer().getScheduler().cancelTasks(this);
+        DATABASE.disconnect();
+        reloadConfig();
+        onEnable();
+
     }
 
 	public void onDisable() {

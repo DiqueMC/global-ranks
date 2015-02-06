@@ -28,10 +28,10 @@ public class PlayerRank {
                 rankName = rank.getName();
 
             }
-            if(playerInfo.get("expiration") != null){
+            if(playerInfo.get("expiration") != null && ((Long)playerInfo.get("expiration")) > 0){
                 expirationDate = new Date((Long) playerInfo.get("expiration"));
             }
-            if(playerInfo.get("creation") != null){
+            if(playerInfo.get("creation") != null && ((Long)playerInfo.get("creation")) > 0){
                 creationDate = new Date((Long) playerInfo.get("creation"));
             }
 

@@ -37,7 +37,7 @@ public abstract class SQL
                     connection = getNewConnection();
                 }
             }
-        }, 20, 60 * 20 );
+        }, 60, 60 * 20 );
     }
 
     protected abstract Connection getNewConnection();
@@ -126,7 +126,7 @@ public abstract class SQL
 
     private void updateTables()
     {
-        query( "CREATE TABLE IF NOT EXISTS GlobalRanks (uuid varchar(36) NOT NULL, name varchar(32) NOT NULL, rank varchar(64) NOT NULL, creation UNSIGNED INT, expiration UNSIGNED INT, PRIMARY KEY (uuid))", false );
+        query( "CREATE TABLE IF NOT EXISTS GlobalRanks (uuid varchar(36) NOT NULL, name varchar(32) NOT NULL, rank varchar(64) NOT NULL, creation BIGINT, expiration BIGINT, PRIMARY KEY (uuid))", false );
 
     }
 
@@ -172,29 +172,32 @@ public abstract class SQL
         return pr;
     }
 
-//    public void removeFromCache( String uuid )
-//    {
-//        if( cache.containsKey( uuid ) )
-//        {
-//            cache.remove( uuid );
-//        }
-//    }
+    public void removeFromCache( OfflinePlayer player ){
+        String uuid = player.getUniqueId().toString();
+        if( cache.containsKey( uuid ) )
+        {
+            cache.remove( uuid );
+        }
+    }
+    public void clearCache(){
+        cache = new LinkedHashMap<String, PlayerRank>();
+    }
 
     public void uploadPlayerRank( OfflinePlayer player, PlayerRank pr){
 
         String uuid = player.getUniqueId().toString();
         String name = player.getName();
         String rank = pr.getTargetRankName();
-        Long creation = null;
+        long creation = 0;
         if(pr.creationDate != null){
             creation = pr.creationDate.getTime();
         }
-        Long expiration = null;
+        long expiration = 0;
         if(pr.expirationDate != null){
             expiration = pr.expirationDate.getTime();
         }
         cache.put( uuid, pr );
-        String q = "INSERT INTO GlobalRanks (uuid, name,rank,creation,expiration) VALUES ('" + uuid + "','" + name + "','" + rank + "','" + creation + "','" + expiration +"');";
+        String q = "REPLACE INTO GlobalRanks (uuid, name,rank,creation,expiration) VALUES ('" + uuid + "','" + name + "','" + rank + "','" + creation + "','" + expiration +"');";
         Bukkit.getLogger().info(q);
         query( q, false );
     }

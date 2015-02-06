@@ -1,16 +1,16 @@
 config-version: 1
 database:
-  type: sqlite
+  type: mysql
   host: localhost
   port: '3306'
   user: user
-  password: password
+  password: ********
   database: minecraft
 #Seconds
 frequencyCheck: 60
 ranks:
   youtuber:
-    duration: 30s
+    duration: 30d
     weight: 1
     displayName: '&cYoutuber'
     joinMessage:
@@ -24,7 +24,7 @@ ranks:
     - '&6 ==========================================='
 
   vipHierro:
-    duration: 30s
+    duration: 30d
     weight: 1
     displayName: '&eVip Hierro'
     joinMessage:
@@ -38,7 +38,7 @@ ranks:
     - '&c Se ha agotado el tiempo de tu vip :('
     - '&6 ==========================================='
   vipDiamante:
-    duration: 30s
+    duration: 30d
     weight: 2
     displayName: '&bVip Diamante'
     joinMessage:
@@ -51,6 +51,27 @@ ranks:
     - '&6 ==========================================='
     - '&c Se ha agotado el tiempo de tu vip :('
     - '&6 ==========================================='
+  staffjr:
+    displayName: '&6Staff Junior'
+  staff:
+    displayName: '&6Staff'
+  staffJrVipHierro:
+    duration: 30d
+    displayName: '&6Staff Junior + &eVip Hierro'
+    nextRank: staffJr
+  staffJrVipDiamante:
+    duration: 30d
+    displayName: '&6Staff Junior + &bVip Diamante'
+    nextRank: staffJr
+  staffVipHierro:
+    duration: 30d
+    displayName: '&6Staff + &eVip Hierro'
+    nextRank: staff
+  staffVipDiamante:
+    duration: 30d
+    displayName: '&6Staff + &bVip Diamante'
+    nextRank: staff
+
 
 users:
   fakeuser:

@@ -16,12 +16,20 @@ commands:
   description: Muestra los rangos del jugador especificado
   usage: /getrank <playername>
   permission: globalranks.admin
- myrank:
+ rank:
   description: Muestra el rango actual.
-  usage: /myrank
+  usage: /rank
+  permission: globalranks.user
+ globalranks:
+  description: Comando principal
+  usage: /globalranks
   permission: globalranks.admin
+
 
 permissions:
  globalranks.admin:
+  default: op
+  description: Gives access to admin commands.
+ globalranks.user:
   default: true
-  description: Allows you to use the plugin.
+  description: Gives access to user commands.

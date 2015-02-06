@@ -12,7 +12,6 @@ public class SyncRank implements Runnable {
 
     @Override
     public void run() {
-        plugin.getLogger().info("SYNC RANKS");
 
         Player[] pl = plugin.getServer().getOnlinePlayers();
         for(Player player : pl){
