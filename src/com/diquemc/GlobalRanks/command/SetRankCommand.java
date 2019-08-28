@@ -40,9 +40,9 @@ public class SetRankCommand implements CommandExecutor {
             if (pr != null) {
 
                 String message = ChatColor.GREEN + "Se ha asignado el rango " + ChatColor.YELLOW + pr.getTargetRank().getDisplayName();
-                message = message + ChatColor.GREEN + " al usuario " + ChatColor.YELLOW + pr.playerName;
-                if (pr.expirationDate != null) {
-                    message = message + ChatColor.GREEN + " hasta " + ChatColor.YELLOW + pr.expirationDate.toLocaleString();
+                message = message + ChatColor.GREEN + " al usuario " + ChatColor.YELLOW + pr.getPlayerName();
+                if (pr.hasExpirationDate()) {
+                    message = message + ChatColor.GREEN + " hasta " + ChatColor.YELLOW + pr.getExpirationDateString();
                 }
                 sender.sendMessage(message);
             } else {

@@ -165,7 +165,10 @@ public class RankManager {
         }
 
         PlayerRank localPlayerRank = new PlayerRank(playerConfig);
-        return localPlayerRank.getTargetRank();
+        if(hasRank(player,localPlayerRank.getTargetRank())){
+            return localPlayerRank.getTargetRank();
+        }
+        return null;
 
     }
 

@@ -1,20 +1,22 @@
 package com.diquemc.GlobalRanks;
 
+import com.diquemc.GlobalRanks.utils.DateUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 //import java.util.UUID;
 
 public class PlayerRank {
-    public String playerName;
-    public String rankName;
+    private String playerName;
+    private String rankName;
     private Rank rank;
-    public Date expirationDate = null;
-    public Date creationDate = null;
-    public String uuid;
-    public OfflinePlayer _player;
+    private Date expirationDate = null;
+    private Date creationDate = null;
+    private String uuid;
+    private OfflinePlayer _player;
 
     public PlayerRank(LinkedHashMap<String, Object> playerInfo) {
         try {
@@ -99,7 +101,44 @@ public class PlayerRank {
         return result;
     }
 
+    public boolean hasExpirationDate () {
+        return expirationDate != null;
+    }
+
     public boolean isExpired() {
-        return expirationDate != null && new Date().after(expirationDate);
+        return hasExpirationDate() && new Date().after(expirationDate);
+    }
+
+    public String getExpirationDateString () {
+        if(!hasExpirationDate()) {
+            return "";
+        }
+        DateFormat dateFormat = DateFormat.getDateTimeInstance();
+        return dateFormat.format(expirationDate);
+    }
+
+    public long getExpirationTime () {
+        if(expirationDate != null) {
+            return  expirationDate.getTime();
+        }
+        return 0;
+    }
+
+    public long getCreationTime () {
+        if(creationDate != null) {
+            return creationDate.getTime();
+        }
+        return 0;
+    }
+
+    public String remainingTime () {
+        if(!hasExpirationDate()) {
+            return  "";
+        }
+        return DateUtil.formatDateDiff(expirationDate.getTime());
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 }

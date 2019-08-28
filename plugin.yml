@@ -20,11 +20,14 @@ commands:
   description: Muestra el rango actual.
   usage: /rank
   permission: globalranks.user
+ rank check:
+  description: Chequea si hay actualizaciones de ranog
+  usage: /rank check
+  permission: globalranks.user
  globalranks:
   description: Comando principal
   usage: /globalranks
   permission: globalranks.admin
-
 
 permissions:
  globalranks.admin:

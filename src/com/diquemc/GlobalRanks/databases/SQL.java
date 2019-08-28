@@ -156,14 +156,8 @@ public abstract class SQL {
         String uuid = player.getUniqueId().toString();
         String name = player.getName();
         String rank = pr.getTargetRankName();
-        long creation = 0;
-        if (pr.creationDate != null) {
-            creation = pr.creationDate.getTime();
-        }
-        long expiration = 0;
-        if (pr.expirationDate != null) {
-            expiration = pr.expirationDate.getTime();
-        }
+        long creation = pr.getCreationTime();
+        long expiration = pr.getExpirationTime();
         cache.put(uuid, pr);
         String q = "REPLACE INTO GlobalRanks (uuid, name,rank,creation,expiration) VALUES ('" + uuid + "','" + name + "','" + rank + "','" + creation + "','" + expiration + "');";
         Bukkit.getLogger().info(q);
