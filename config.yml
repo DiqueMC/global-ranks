@@ -22,57 +22,48 @@ ranks:
     - '&6 ==========================================='
     - '&c Se ha agotado el tiempo de tu rango :('
     - '&6 ==========================================='
-
-  vipHierro:
-    duration: 30d
+  vipZombie:
+    duration: 5d
     weight: 1
-    displayName: '&eVip Hierro'
+    displayName: '&2Vip Zombie'
     joinMessage:
     - '&6 ==========================================='
     - '&a Felicitaciones ya estas disfrutando de los'
-    - '&a beneficios del &eVip Hierro&a!.'
+    - '&a beneficios del &2Vip Zombie&a!.'
     - '&a Gracias Por Tu Colaboracion Con El Server!'
     - '&6 ==========================================='
     leaveMessage:
     - '&6 ==========================================='
     - '&c Se ha agotado el tiempo de tu vip :('
     - '&6 ==========================================='
-  vipDiamante:
+  vipEnderman:
     duration: 30d
     weight: 2
-    displayName: '&bVip Diamante'
+    displayName: '&5Vip Enderman'
     joinMessage:
     - '&6 ==========================================='
     - '&a Felicitaciones ya estas disfrutando de los'
-    - '&a beneficios del &bVip Diamante&a!.'
+    - '&a beneficios del &5Vip Enderman&a!.'
     - '&a Gracias Por Tu Colaboracion Con El Server!'
     - '&6 ==========================================='
     leaveMessage:
     - '&6 ==========================================='
     - '&c Se ha agotado el tiempo de tu vip :('
     - '&6 ==========================================='
-  staffjr:
-    displayName: '&6Staff Junior'
-  staff:
-    displayName: '&6Staff'
-  staffJrVipHierro:
-    duration: 30d
-    displayName: '&6Staff Junior + &eVip Hierro'
-    nextRank: staffJr
-  staffJrVipDiamante:
-    duration: 30d
-    displayName: '&6Staff Junior + &bVip Diamante'
-    nextRank: staffJr
-  staffVipHierro:
-    duration: 30d
-    displayName: '&6Staff + &eVip Hierro'
-    nextRank: staff
-  staffVipDiamante:
-    duration: 30d
-    displayName: '&6Staff + &bVip Diamante'
-    nextRank: staff
-
-
+  vipWither:
+    duration: 40d
+    weight: 2
+    displayName: '&8Vip Wither'
+    joinMessage:
+    - '&6 ==========================================='
+    - '&a Felicitaciones ya estas disfrutando de los'
+    - '&a beneficios del &8Vip Wither&a!.'
+    - '&a Gracias Por Tu Colaboracion Con El Server!'
+    - '&6 ==========================================='
+    leaveMessage:
+    - '&6 ==========================================='
+    - '&c Se ha agotado el tiempo de tu vip :('
+    - '&6 ==========================================='
 users:
   fakeuser:
     rank: vipHierro

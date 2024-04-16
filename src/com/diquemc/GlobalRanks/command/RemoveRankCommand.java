@@ -1,14 +1,18 @@
 package com.diquemc.GlobalRanks.command;
 
 import com.diquemc.GlobalRanks.GlobalRanks;
-import org.bukkit.ChatColor;
+import com.diquemc.helper.DiqueMCCommand;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import javax.annotation.Nonnull;
+import java.util.List;
 
 
-public class RemoveRankCommand implements CommandExecutor {
+public class RemoveRankCommand extends DiqueMCCommand {
     private final GlobalRanks plugin;
 
     public RemoveRankCommand(GlobalRanks plugin) {
@@ -17,7 +21,7 @@ public class RemoveRankCommand implements CommandExecutor {
 
 
     @Override
-    public final boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+    public final boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull final String[] args) {
         if (args.length != 1) {
             return false;
         }
@@ -29,7 +33,7 @@ public class RemoveRankCommand implements CommandExecutor {
                 return false;
             }
             GlobalRanks.getPlugin().global.removePlayer(p);
-            plugin.getRankManager().checkRanks(p);
+            plugin.getRankManager().checkRanks(p.getPlayer());
             sender.sendMessage(ChatColor.GREEN + "Se han eliminado los rangos del jugador " + ChatColor.YELLOW + p.getName());
 
 
@@ -39,4 +43,8 @@ public class RemoveRankCommand implements CommandExecutor {
         return true;
     }
 
+    @Override
+    public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String alias, @Nonnull String[] args) {
+        return playersListAutoComplete(args);
+    }
 }

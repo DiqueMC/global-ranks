@@ -3,14 +3,20 @@ package com.diquemc.GlobalRanks.command;
 import com.diquemc.GlobalRanks.GlobalRanks;
 import com.diquemc.GlobalRanks.PlayerRank;
 import com.diquemc.GlobalRanks.Rank;
-import org.bukkit.ChatColor;
+import com.diquemc.helper.DiqueMCCommand;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
-public class SetRankCommand implements CommandExecutor {
+public class SetRankCommand extends DiqueMCCommand {
     private final GlobalRanks plugin;
 
     public SetRankCommand(GlobalRanks plugin) {
@@ -18,7 +24,7 @@ public class SetRankCommand implements CommandExecutor {
     }
 
     @Override
-    public final boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+    public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command cmd, @Nonnull String label, @Nonnull String[] args) {
         if (args.length < 2) {
             return false;
         }
@@ -53,6 +59,17 @@ public class SetRankCommand implements CommandExecutor {
             ex.printStackTrace();
         }
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String alias, @Nonnull String[] args) {
+        if(args.length == 1) {
+            return playersListAutoComplete(args);
+        } else if (args.length == 2){
+            return commandAutoComplete(args, Arrays.asList("vipZombie", "vipEnderman", "vipWither", "youtuber"));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 package com.diquemc.GlobalRanks;
 
-import com.diquemc.GlobalRanks.utils.DateUtil;
+import com.diquemc.utils.DateUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 

@@ -28,7 +28,5 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onExit(PlayerQuitEvent event) {
         GlobalRanks.getPlugin().getDB().removeFromCache(event.getPlayer());
-
-
     }
 }

@@ -1,11 +1,13 @@
 package com.diquemc.GlobalRanks.command;
 
 import com.diquemc.GlobalRanks.GlobalRanks;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import javax.annotation.Nonnull;
 
 
 public class MainCommand implements CommandExecutor {
@@ -17,7 +19,7 @@ public class MainCommand implements CommandExecutor {
 
 
     @Override
-    public final boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+    public final boolean onCommand(@Nonnull final CommandSender sender, @Nonnull final Command command, @Nonnull final String label, @Nonnull final String[] args) {
         String howToUse = "Uso: /globalranks <reload|refresh>";
         if (args.length == 0) {
             sender.sendMessage(ChatColor.RED + howToUse);

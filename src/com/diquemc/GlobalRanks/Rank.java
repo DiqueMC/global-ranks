@@ -1,15 +1,20 @@
 package com.diquemc.GlobalRanks;
 
-import com.diquemc.GlobalRanks.utils.DateUtil;
+import com.diquemc.utils.ChatUtil;
+import com.diquemc.utils.DateUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 public class Rank {
     private static LinkedHashMap<String, Rank> loadedRanks;
@@ -28,6 +33,22 @@ public class Rank {
 //    public static boolean isValidRank(String rankName){
 //        return getRankByName(rankName).isValid();
 //    }
+    public static Set<String> getManagedRanksAsPermissionGroup() {
+        Set<String> result = new HashSet<>();
+        FileConfiguration config = GlobalRanks.getPlugin().getConfig();
+        ConfigurationSection configRanks = config.getConfigurationSection("ranks");
+        if(configRanks == null) {
+            return  result;
+        }
+        Set<String> definedRanks = configRanks.getKeys(false);
+        for(String rank: definedRanks) {
+            result.add("group." + rank.toLowerCase());
+        }
+        return result;
+    }
+    public static Set<String> getManagedRanks() {
+        return loadedRanks.keySet();
+    }
 
     public static void init() {
         loadedRanks = new LinkedHashMap<String, Rank>();
@@ -80,7 +101,7 @@ public class Rank {
     }
 
     public String getDisplayName() {
-        return ChatColor.translateAlternateColorCodes('&', displayName);
+        return ChatUtil.translateColorCodes(displayName);
     }
 
     //TODO CHANGE THIS
@@ -94,7 +115,7 @@ public class Rank {
             messages.add(ChatColor.GREEN + "Felicitaciones! Ya tienes tu rango " + getDisplayName());
         }
         for (String message : messages) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            player.sendMessage(ChatUtil.translateColorCodes(message));
         }
 
     }
@@ -109,7 +130,7 @@ public class Rank {
 
         }
         for (String message : messages) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+            player.sendMessage(ChatUtil.translateColorCodes(message));
         }
 
     }
@@ -122,7 +143,7 @@ public class Rank {
 
         if (info.get("duration") != null) {
             try {
-                return DateUtil.parseDateDiff((String) info.get("duration"), true);
+                return DateUtil.parseDateDiff((String) info.get("duration"), true).getTime();
             } catch (Exception e) {
                 Bukkit.getLogger().severe("Invalid duration config");
             }

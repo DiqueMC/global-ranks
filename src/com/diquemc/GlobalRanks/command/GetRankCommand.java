@@ -4,20 +4,22 @@ import com.diquemc.GlobalRanks.GlobalRanks;
 import com.diquemc.GlobalRanks.PlayerRank;
 import com.diquemc.GlobalRanks.Rank;
 import com.diquemc.GlobalRanks.manager.RankManager;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import com.diquemc.helper.DiqueMCCommand;
+import com.diquemc.utils.ChatUtil;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import javax.annotation.Nonnull;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 
-public class GetRankCommand implements CommandExecutor {
+public class GetRankCommand extends DiqueMCCommand {
     final GlobalRanks plugin;
 
     public GetRankCommand(GlobalRanks plugin) {
@@ -26,9 +28,9 @@ public class GetRankCommand implements CommandExecutor {
 
     void rankInfo(CommandSender sender, OfflinePlayer p) {
         try {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                RankManager rm = plugin.getRankManager();
-                Rank lr = rm.getLocalRank(p);
+//            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                RankManager.loadLPUser(p, (user) -> {
+                    RankManager rm = plugin.getRankManager();
                 PlayerRank gr = rm.getGlobalPlayerRank(p);
                 String currentRank = null,
                         globalRank = null,
@@ -38,25 +40,26 @@ public class GetRankCommand implements CommandExecutor {
 
                 if (gr != null) {
                     Rank global = gr.getTargetRank();
-                    if (lr != null && !lr.isEqualTo(global.getName())) {
-                        currentRank = lr.getDisplayName();
-                        remainingTime = "0 segundos";
-                        nextRank = global.getDisplayName();
-                    } else {
+//                    if (lr != null && !lr.isEqualTo(global.getName())) {
+//                        currentRank = lr.getDisplayName();
+//                        remainingTime = "0 segundos";
+//                        nextRank = global.getDisplayName();
+//                    } else {
                         globalRank = global.getDisplayName();
                         if (gr.hasExpirationDate()) {
                             rankUntil = gr.getExpirationDateString();
                             remainingTime = gr.remainingTime();
                         }
-                    }
-                } else if (lr != null) {
-                    currentRank = lr.getDisplayName();
-                    remainingTime = "0 segundos";
-                    if (lr.getNextRank() != null) {
-                        nextRank = lr.getNextRank().getDisplayName();
-                    }
+//                    }
+//                } else if (lr != null) {
+//                    currentRank = lr.getDisplayName();
+//                    remainingTime = "0 segundos";
+//                    if (lr.getNextRank() != null) {
+//                        nextRank = lr.getNextRank().getDisplayName();
+//                    }
                 } else {
-                    currentRank = rm.getPlayerGroup(p);
+//                    currentRank = rm.getPlayerGroup(p);
+                    currentRank = user.getPrimaryGroup();
                     if (currentRank == null || currentRank.length() == 0) {
                         currentRank = "Sin rango";
                     }
@@ -81,24 +84,28 @@ public class GetRankCommand implements CommandExecutor {
                 if (remainingTime != null) {
                     messages.add(ChatColor.GREEN + "Tiempo restante: " + remainingTime);
                 }
-                if (nextRank != null) {
-                    messages.add(ChatColor.GREEN + "Proximo rango: " + ChatColor.YELLOW + lr.getNextRank().getDisplayName());
-                }
+//                if (nextRank != null) {
+//                    messages.add(ChatColor.GREEN + "Proximo rango: " + ChatColor.YELLOW + lr.getNextRank().getDisplayName());
+//                }
                 messages.add(ChatColor.GREEN + "Hora del servidor: " + ChatColor.YELLOW + DateFormat.getDateTimeInstance().format(new Date()));
 
                 messages.add(ChatColor.GOLD + "=================================");
                 for (String message : messages) {
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+                    sender.sendMessage(ChatUtil.translateColorCodes(message));
                 }
 
-            });
+                });
+
+
+
+//            });
         } catch (final Exception ex) {
             ex.printStackTrace();
         }
     }
 
     @Override
-    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+    public boolean onCommand(@Nonnull final CommandSender sender, @Nonnull final Command command, @Nonnull final String label, @Nonnull final String[] args) {
         if (args.length != 1) {
             return false;
         }
@@ -110,54 +117,18 @@ public class GetRankCommand implements CommandExecutor {
                 return false;
             }
 
-//            RankManager rm = GlobalRanks.getPlugin().getRankManager();
-
-//            Rank lr = rm.getLocalRank(p);
-//            PlayerRank gr = rm.getGlobalPlayerRank(p);
-
-//            List<String> messages = new ArrayList<String>();
-
-//            sender.sendMessage(ChatColor.GOLD + "=================================");
-//            sender.sendMessage(ChatColor.GREEN + "Jugador: " + ChatColor.YELLOW + p.getName());
             rankInfo(sender, p);
-
-//            if (gr != null) {
-//                Rank global = gr.getTargetRank();
-//                if (lr != null && !lr.isEqualTo(global.getName())) {
-//                    messages.add(ChatColor.GREEN + "Rango actual: " + ChatColor.YELLOW + lr.getDisplayName());
-//                    messages.add(ChatColor.GREEN + "Tiempo restante: " + ChatColor.YELLOW + "0 segundos");
-//                    messages.add(ChatColor.GREEN + "Proximo rango: " + ChatColor.YELLOW + global.getDisplayName());
-//                } else {
-//                    messages.add(ChatColor.GREEN + "Rango global: " + ChatColor.YELLOW + global.getDisplayName());
-//                    if (gr.expirationDate != null) {
-//                        messages.add(ChatColor.GREEN + "Rango hasta: " + ChatColor.YELLOW + gr.expirationDate.toLocaleString());
-//                        messages.add(ChatColor.GREEN + "Tiempo restante: " + ChatColor.YELLOW +
-//                                DateUtil.formatDateDiff(gr.expirationDate.getTime()));
-//                    }
-//
-//
-//                }
-//            } else if (lr != null) {
-//                messages.add(ChatColor.GREEN + "Rango actual: " + ChatColor.YELLOW + lr.getDisplayName());
-//                messages.add(ChatColor.GREEN + "Tiempo restante: " + ChatColor.YELLOW + "0 segundos");
-//                if (lr.getNextRank() != null) {
-//                    messages.add(ChatColor.GREEN + "Proximo rango: " + ChatColor.YELLOW + lr.getNextRank().getDisplayName());
-//                }
-//            } else {
-//                String group = rm.getPlayerGroup(p);
-//                if (group == null || group.length() == 0) {
-//                    group = "Sin rango";
-//                }
-//                messages.add(ChatColor.GREEN + "Rango actual: " + ChatColor.YELLOW + group);
-//            }
-//
-//            messages.add(ChatColor.GREEN + "Hora del servidor: " + ChatColor.YELLOW + new Date().toLocaleString());
-
-//            sender.sendMessage(ChatColor.GOLD + "=================================");
         } catch (final Exception ex) {
             ex.printStackTrace();
         }
         return true;
     }
 
+    @Override
+    public List<String> onTabComplete(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String alias, @Nonnull String[] args) {
+        if(args.length == 1) {
+            return playersListAutoComplete(args);
+        }
+        return Collections.emptyList();
+    }
 }

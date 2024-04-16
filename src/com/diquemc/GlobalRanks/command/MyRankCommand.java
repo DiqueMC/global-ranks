@@ -4,14 +4,15 @@ import com.diquemc.GlobalRanks.GlobalRanks;
 import com.diquemc.GlobalRanks.PlayerRank;
 import com.diquemc.GlobalRanks.Rank;
 import com.diquemc.GlobalRanks.manager.RankManager;
-import com.diquemc.GlobalRanks.utils.DateUtil;
-import org.bukkit.ChatColor;
+import com.diquemc.utils.DateUtil;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nonnull;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,7 +29,7 @@ public class MyRankCommand extends GetRankCommand {
 
 
     @Override
-    public final boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+    public final boolean onCommand(@Nonnull final CommandSender sender, @Nonnull final Command command, @Nonnull final String label, @Nonnull final String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "Este comando solo puede ser ejecutado por jugadores");
             return true;
@@ -37,7 +38,7 @@ public class MyRankCommand extends GetRankCommand {
         try {
             if (args.length == 0) {
 
-                rankInfo(sender, (OfflinePlayer) sender);
+                rankInfo(sender, p);
 //                RankManager rm = plugin.getRankManager();
 //
 //                Rank lr = rm.getLocalRank(p);

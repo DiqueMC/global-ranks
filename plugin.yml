@@ -2,7 +2,9 @@ name: GlobalRanks
 main: com.diquemc.GlobalRanks.GlobalRanks
 author: Hector22x
 description: Manage global ranks
-version: 0.0.1
+version: "1.0"
+depend: [DiqueMCJedis, DiqueMCUtils]
+api-version: "1.15"
 commands:
  setrank:
   description: Agrega el rango especificado al jugador
