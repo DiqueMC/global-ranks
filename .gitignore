@@ -4,3 +4,5 @@ lib
 out
 bin
 .DS_Store
+
+target
